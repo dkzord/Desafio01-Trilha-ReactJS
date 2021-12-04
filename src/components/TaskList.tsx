@@ -10,20 +10,59 @@ interface Task {
   isComplete: boolean;
 }
 
+// Numeros aleatorios de Min = minimo até max = máximo
+/* function getRandom(min, max) {
+  return Math.floor(Math.random() * (min - max + 1) + min);
+} */
+
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+
+    // Explicação do professor para evitar criar id vazio.
+    if(!newTaskTitle) return;
+    
+    const newTask = {
+      //Quanto maior o Max maior menor a chance de repetir o id random.
+      id: Math.random(),
+      title: newTaskTitle,
+      isComplete: false,
+    };
+
+    console.log(newTask.id);
+
+    //Verificação se esta vazio // A verificação esta em cima agora.
+    //if (newTaskTitle != ''){
+      //Cria um novo arry com as informações de newTask
+      setTasks([...tasks, newTask])
+      setNewTaskTitle('')
+    //}
+    console.log(newTask)
   }
 
   function handleToggleTaskCompletion(id: number) {
-    // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    // Vai procurar o id dentro do array tasks
+    // Quando en
+    const search = tasks.map((data) => {
+      if(data.id == id){
+          data.isComplete = !data.isComplete;
+      }
+      return data;
+    })
+    setTasks(search);
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
+    // Vai retornar todas as Task com o ID diferente do que a gente quer deletar
+    // durante o processo
+    const filteredTasks = tasks.filter(task => task.id != id);
+
+    // Cria um novo estado.
+    setTasks(filteredTasks)
   }
 
   return (
